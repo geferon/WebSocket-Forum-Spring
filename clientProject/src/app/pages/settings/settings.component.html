@@ -1,0 +1,42 @@
+<main class="settings-page">
+	<app-page-header [defaultURL]="['/']">
+		Ajustes
+	</app-page-header>
+
+	<form [formGroup]="usuarioForm" (ngSubmit)="save()" fxLayout="row" fxLayoutGap="12px">
+		<div class="user-container" fxLayout="column">
+			<div class="user-preview" fxFlex>
+				<app-basic-user-label [user]="usuario"></app-basic-user-label>
+				<div class="user-avatar">
+					<input type="file" accept="image/*" (change)="onAvatarChange($event)" />
+					<img [src]="avatarUrl" alt="Foto de perfil de usuario" />
+				</div>
+			</div>
+		</div>
+		<div class="user-content" fxFlex fxLayout="column">
+			<mat-form-field>
+				<mat-label>Nombre de usuario</mat-label>
+				<input type="text" matInput required formControlName="username" />
+				<mat-error *ngIf="usuarioForm.hasError('required', 'username')">
+					Este campo es obligatorio.
+				</mat-error>
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Correo electrónico</mat-label>
+				<input type="text" matInput required formControlName="email" />
+				<mat-error *ngIf="usuarioForm.hasError('required', 'email')">
+					Este campo es obligatorio.
+				</mat-error>
+			</mat-form-field>
+
+			<div class="password-header mat-caption">Contraseña</div>
+			<button class="password-change-button" fxFlexAlign="start" mat-raised-button type="button" (click)="changePassword()">Cambiar contraseña</button>
+
+			<p>Para cambiar la foto de perfil, hacer click en ella a la izquierda.</p>
+
+			<button fxFlexAlign="end" mat-raised-button color="primary" type="submit" [disabled]="!canSave()">
+				Guardar
+			</button>
+		</div>
+	</form>
+</main>

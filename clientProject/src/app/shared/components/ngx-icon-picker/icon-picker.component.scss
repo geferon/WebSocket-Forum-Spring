@@ -1,0 +1,46 @@
+
+i {
+	position: relative;
+	cursor: default;
+}
+
+div.icon-search {
+	padding: 5px;
+}
+
+div.cursor-sv {
+	position: relative;
+	width: 15px;
+	height: 15px;
+	border-radius: 50%;
+	border: #ddd solid 1px;
+	cursor: default;
+}
+
+div.cursor {
+	position: relative;
+	width: 16px;
+	height: 16px;
+	border-radius: 50%;
+	border: #222 solid 2px;
+	cursor: default;
+}
+
+.header {
+	padding: 0 16px;
+}
+
+.icon-grid {
+	display: flex;
+	overflow-y: auto;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 6px;
+	max-height: 40vh;
+	overflow-y: scroll;
+
+	div {
+		margin: 2px;
+	}
+}

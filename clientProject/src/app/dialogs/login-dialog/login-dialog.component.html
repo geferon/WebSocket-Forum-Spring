@@ -1,0 +1,72 @@
+<mat-dialog-content fxLayout="column">
+	<mat-tab-group dynamicHeight (selectedTabChange)="selectedTab($event)">
+		<mat-tab label="Iniciar sesión">
+			<form fxFlex fxLayout="column" [formGroup]="loginForm" (ngSubmit)="login()">
+				<h2 mat-dialog-title>Iniciar Sesión</h2>
+				<mat-form-field>
+					<mat-label>Usuario/Email</mat-label>
+					<input type="text" matInput required formControlName="username" />
+					<mat-error *ngIf="loginForm.hasError('required', 'username')">Este campo es obligatorio.</mat-error>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Contraseña</mat-label>
+					<input matInput required [type]="ocultarPass ? 'password' : 'text'" formControlName="password" />
+					<button type="button" mat-icon-button matSuffix (click)="ocultarPass = !ocultarPass">
+						<mat-icon>{{ocultarPass ? 'visibility_off' : 'visibility'}}</mat-icon>
+					</button>
+					<mat-error *ngIf="loginForm.hasError('required', 'password')">Este campo es obligatorio.</mat-error>
+				</mat-form-field>
+				<mat-error *ngIf="loginError">Usuario o contraseña incorrectos.</mat-error>
+
+				<mat-dialog-actions align="end">
+					<button type="button" mat-button mat-dialog-close>Cancelar</button>
+					<button type="submit" mat-button [disabled]="!loginForm.valid">Iniciar sesión</button>
+				</mat-dialog-actions>
+			</form>
+		</mat-tab>
+		<mat-tab label="Registrar">
+			<form fxFlex fxLayout="column" [formGroup]="registerForm" (ngSubmit)="register()">
+				<h2 mat-dialog-title>Registrar</h2>
+				<mat-form-field>
+					<mat-label>Nombre de usuario</mat-label>
+					<input type="text" matInput required formControlName="username" />
+					<mat-error *ngIf="registerForm.hasError('required', 'username')">Este campo es obligatorio.</mat-error>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Correo electronico</mat-label>
+					<input type="text" matInput required formControlName="email" />
+					<mat-error *ngIf="registerForm.hasError('required', 'email')">Este campo es obligatorio.</mat-error>
+					<mat-error *ngIf="registerForm.hasError('email', 'email')">Este campo solo admite correos electrónicos.</mat-error>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Contraseña</mat-label>
+					<input matInput required [type]="ocultarPass ? 'password' : 'text'" formControlName="password" />
+					<button type="button" mat-icon-button matSuffix (click)="ocultarPass = !ocultarPass">
+						<mat-icon>{{ocultarPass ? 'visibility_off' : 'visibility'}}</mat-icon>
+					</button>
+					<mat-error *ngIf="registerForm.hasError('required', 'password')">Este campo es obligatorio.</mat-error>
+					<mat-error *ngIf="registerForm.hasError('minlength', 'password')">
+						La contraseña tiene una longitud mínima de {{registerForm.controls.password.errors.minlength.requiredLength}} caracteres.
+					</mat-error>
+					<mat-error *ngIf="registerForm.hasError('maxlength', 'password')">
+						La contraseña tiene una longitud máxima de {{registerForm.controls.password.errors.maxlength.requiredLength}} caracteres.
+					</mat-error>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Repetir contraseña</mat-label>
+					<input matInput required type="password" formControlName="confirmPassword" [errorStateMatcher]="passwordMatcher" />
+					<mat-error *ngIf="registerForm.hasError('required', 'confirmPassword')">Este campo es obligatorio.</mat-error>
+					<mat-error *ngIf="registerForm.hasError('mustMatch')">Ambas contraseñas deben de ser iguales.</mat-error>
+				</mat-form-field>
+				<mat-error *ngIf="registerError">
+					{{isString(registerError) ? registerError : 'Ha habido un error al registrarte.'}}
+				</mat-error>
+
+				<mat-dialog-actions align="end">
+					<button type="button" mat-button mat-dialog-close>Cancelar</button>
+					<button type="submit" mat-button [disabled]="!registerForm.valid">Registrar</button>
+				</mat-dialog-actions>
+			</form>
+		</mat-tab>
+	</mat-tab-group>
+</mat-dialog-content>

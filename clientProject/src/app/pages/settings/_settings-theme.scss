@@ -1,0 +1,36 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
+
+@mixin theme($theme) {
+	$primary: map.get($theme, primary);
+	$accent: map.get($theme, accent);
+	$warn: map.get($theme, warn);
+	$background: map.get($theme, background);
+	$foreground: map.get($theme, foreground);
+	// $typo-config: mat.get-typography-config($theme, mat.define-typography-config());
+	$typo-config: mat.define-typography-config();
+
+	.settings-page {
+		.user-container {
+			background: mat.get-color-from-palette($background, card);
+			color: mat.get-color-from-palette($primary, default-contrast);
+
+			app-basic-user-label {
+				font: {
+					size: mat.font-size($typo-config, subheading-2);
+					weight: mat.font-weight($typo-config, title);
+				}
+
+				line-height: mat.font-size($typo-config, subheading-2)+4;
+			}
+
+			a {
+				display: block;
+			}
+		}
+
+		.password-header {
+			color: mat.get-color-from-palette($foreground, secondary-text);
+		}
+	}
+}

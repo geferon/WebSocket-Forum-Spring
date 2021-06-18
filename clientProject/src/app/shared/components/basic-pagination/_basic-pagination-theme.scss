@@ -1,0 +1,38 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
+
+@mixin theme($theme) {
+	$primary: map.get($theme, primary);
+	$accent: map.get($theme, accent);
+	$warn: map.get($theme, warn);
+	$background: map.get($theme, background);
+	$foreground: map.get($theme, foreground);
+	// $typo-config: mat.get-typography-config($theme, mat.define-typography-config());
+	$typo-config: mat.define-typography-config();
+
+	.page-button,
+	.pagination-spacer {
+		border: 1px solid mat.get-color-from-palette($foreground, divider);
+		color: mat.get-color-from-palette($foreground, secondary-text);
+	}
+
+	app-basic-pagination.pagination-small {
+		.pages-container {
+			border: 1px solid mat.get-color-from-palette($foreground, divider);
+		}
+
+		.page-button,
+		.pagination-spacer {
+			font-size: mat.font-size($typo-config, body-1);
+		}
+	}
+	app-basic-pagination:not(.pagination-small) {
+		.page-button,
+		.pagination-spacer {
+			font: {
+				size: mat.font-size($typo-config, subheading-2);
+				weight: mat.font-weight($typo-config, title);
+			}
+		}
+	}
+}

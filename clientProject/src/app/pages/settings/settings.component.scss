@@ -1,0 +1,48 @@
+.user-container {
+	text-align: center;
+
+	.user-preview {
+		margin: 40px;
+		min-height: 320px;
+
+		.user-avatar {
+			width: 100px;
+			// max-width: 100%;
+			position: relative;
+
+			img {
+				width: 100%;
+			}
+
+			input[type="file"] {
+				display: block;
+				cursor: pointer;
+				opacity: 0;
+				position: absolute;
+				z-index: 2;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		p,
+		app-basic-user-label {
+			display: block;
+			margin-bottom: 6px;
+		}
+	}
+
+	// .password-header {
+	// 	margin-bottom: 0;
+	// }
+}
+
+.user-content {
+	.password-change-button {
+		margin-bottom: 12px;
+	}
+}

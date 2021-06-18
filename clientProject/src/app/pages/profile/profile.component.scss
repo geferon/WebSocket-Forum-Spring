@@ -1,0 +1,80 @@
+@use '~@angular/flex-layout/mq'as mq;
+
+.user-container {
+	text-align: center;
+
+	.user-preview {
+		margin: 8px 12px 4px;
+
+		.user-avatar {
+			width: 70px;
+			max-width: 100%;
+		}
+
+		p,
+		app-basic-user-label {
+			display: block;
+			margin-bottom: 2px;
+		}
+	}
+}
+
+.publicacion-hilo {
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.content-container {
+	.post-header {
+		> * {
+			padding-top: 6px;
+			padding-bottom: 6px;
+
+			&:first-child {
+				padding-left: 6px;
+			}
+			&:last-child {
+				padding-right: 6px;
+			}
+		}
+
+		color: inherit;
+		text-decoration: none;
+		line-height: inherit;
+		font: {
+			size: inherit;
+			weight: inherit;
+		}
+
+		.buttons {
+
+			button,
+			mat-icon {
+				width: unset;
+				height: unset;
+			}
+		}
+	}
+
+	.post-content {
+		padding: 14px;
+
+		line-break: anywhere;
+	}
+}
+
+@include mq.layout-bp(gt-sm) {
+	.user-container .user-preview {
+		margin: 40px;
+		min-height: 320px;
+
+		.user-avatar {
+			width: 100px;
+		}
+
+		p,
+		app-basic-user-label {
+			margin-bottom: 6px;
+		}
+	}
+}

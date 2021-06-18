@@ -1,0 +1,4 @@
+<a class="user mat-accent"
+	[routerLink]="['/', 'usuarios', user.id]"
+	(click)="$event.stopPropagation()"
+	[ngClass]="getRoles()">{{user.username}}</a>

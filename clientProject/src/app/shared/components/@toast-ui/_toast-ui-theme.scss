@@ -1,0 +1,8 @@
+@use 'sass:map';
+@use './editor/editor-theme';
+@use './viewer/viewer-theme';
+
+@mixin theme($theme) {
+	@include editor-theme.theme($theme);
+	@include viewer-theme.theme($theme);
+}

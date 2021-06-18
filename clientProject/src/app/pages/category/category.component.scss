@@ -1,0 +1,40 @@
+.header .create-hilo {
+	margin-bottom: 12px;
+}
+
+.categoria-hilo {
+	border-radius: 4px;
+	overflow: hidden;
+	min-height: 72px;
+
+	> .content {
+		padding: 8px 16px;
+		overflow: hidden;
+
+		.title, .subtitle {
+			text-overflow: ellipsis;
+			overflow: hidden;
+		}
+	}
+
+	> .info {
+		padding: 8px;
+	}
+
+	.user-avatar {
+		width: 56px;
+		height: 56px;
+	}
+
+	app-basic-pagination {
+		margin-left: 8px;
+	}
+}
+
+a {
+	text-decoration: none;
+}
+
+app-basic-pagination.thread-pagination {
+	margin-top: 16px;
+}

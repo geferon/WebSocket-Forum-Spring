@@ -1,0 +1,21 @@
+<div class="pages-container" *ngIf="pages && pages.length > 0" fxLayout="row" [fxLayoutGap]="small ? '' : '8px'">
+	<ng-container *ngFor="let renderPage of pages">
+		<ng-container *ngIf="renderPage">
+			<a mat-button class="page-button" *ngIf="routeBase"
+				[routerLink]="getPageLink(renderPage)"
+				[ngClass]="{'active': page == renderPage, 'mat-accent': page == renderPage, 'mat-stroked-button': small, 'mat-flat-button': !small}">
+				{{renderPage}}
+			</a>
+			<button mat-button class="page-button" *ngIf="!routeBase"
+				(click)="goToPage(renderPage)"
+				[ngClass]="{'active': page == renderPage, 'mat-accent': page == renderPage, 'mat-stroked-button': small, 'mat-flat-button': !small}">
+				{{renderPage}}
+			</button>
+		</ng-container>
+		<button mat-button class="pagination-spacer" *ngIf="!renderPage"
+			[ngClass]="{'mat-stroked-button': small, 'mat-flat-button': !small}"
+			(click)="openPaginator($event)">
+			...
+		</button>
+	</ng-container>
+</div>

@@ -1,0 +1,57 @@
+<main fxLayout="column">
+	<a mat-raised-button [routerLink]="['categorias', 'new']"
+		*ngIf="auth.isRole('ROLE_ADMIN')">
+		Nueva categoria
+	</a>
+	<div class="content content-row categories"
+			gdColumns="1fr 1fr" gdColumns.lt-md="1fr" gdGap="16px">
+		<a class="mat-card category mat-elevation-z4" matRipple
+				*ngFor="let categoria of categorias$ | async"
+				[routerLink]="['/', 'categorias', categoria.id]"
+				(click)="$event.stopPropagation()">
+			<mat-icon class="category-icon" fxHide fxShow.gt-xs>{{categoria.icono}}</mat-icon>
+			<div class="vl" fxHide fxShow.gt-xs></div>
+			<div class="mat-card-header category-header" fxLayout="row">
+				<div class="mat-card-header-text" fxLayout="column" fxFlex>
+					<mat-card-title>
+						{{categoria.nombre}}
+					</mat-card-title>
+					<mat-card-subtitle>
+						{{categoria.descripcion}}
+					</mat-card-subtitle>
+				</div>
+
+				<button mat-icon-button [matMenuTriggerFor]="categoriaEditar" (click)="$event.stopPropagation();$event.preventDefault();"
+					*ngIf="auth.isRole('ROLE_ADMIN')">
+					<mat-icon>more_vert</mat-icon>
+				</button>
+				<mat-menu #categoriaEditar="matMenu" (click)="$event.stopPropagation();$event.preventDefault();">
+					<a mat-menu-item [routerLink]="['categorias', 'new', categoria.id]">
+						<mat-icon>edit</mat-icon>
+						<span>Editar</span>
+					</a>
+					<!-- Solo se puede borrar si esta vacio -->
+					<button mat-menu-item *ngIf="!categoria.ultimoHilo" (click)="deleteCategoria(categoria)">
+						<mat-icon>delete</mat-icon>
+						<span>Borrar</span>
+					</button>
+				</mat-menu>
+			</div>
+			<hr [style.border-color]="categoria.color">
+			<a class="category-last-post" *ngIf="categoria.ultimoHilo as lastPost"
+				[routerLink]="['/', 'hilos', categoria.ultimoHilo.id, categoria.ultimoHilo.paginasTotales]"
+				[fragment]="'post-' + categoria.ultimoHilo.ultimaPublicacion.id"
+				(click)="$event.stopPropagation()">
+				<div class="last-post-header">{{lastPost.titulo}}</div>
+				<div class="last-post-subheader">
+					Última publicación por
+					<app-basic-user-label
+						[user]="lastPost.ultimaPublicacion.creador"></app-basic-user-label>&nbsp;<span timeago
+						[date]="lastPost.ultimaPublicacion.publicadoEn"
+						[matTooltip]="lastPost.ultimaPublicacion.publicadoEn | date : 'medium'">
+					</span>
+				</div>
+			</a>
+		</a>
+	</div>
+</main>

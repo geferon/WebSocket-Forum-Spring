@@ -1,0 +1,67 @@
+@use '~@angular/material' as mat;
+
+@use 'sass:map';
+@use './app/shared/components/navbar/navbar-theme';
+@use './app/shared/components/basic-pagination/basic-pagination-theme';
+@use './app/shared/components/@toast-ui/toast-ui-theme';
+@use './app/shared/components/color-picker';
+@use './app/dialogs/dialogs-theme';
+@use './app/pages/home/home-theme';
+@use './app/pages/category/category-theme';
+@use './app/pages/thread/thread-theme';
+@use './app/pages/settings/settings-theme';
+@use './app/pages/profile/profile-theme';
+
+// Styles for the docs app that are based on the current theme.
+@mixin theme($theme) {
+	$primary: map.get($theme, primary);
+	$accent: map.get($theme, accent);
+	$warn: map.get($theme, warn);
+	$background: map.get($theme, background);
+	$foreground: map.get($theme, foreground);
+
+	.app-background {
+		background: mat.get-color-from-palette($background, background);
+		color: mat.get-color-from-palette($primary, default-contrast);
+	}
+
+	.primary-header {
+		// background: mat.get-color-from-palette($primary);
+
+		h1 {
+			color: mat.get-color-from-palette($primary, default-contrast);
+		}
+	}
+
+	.footer {
+		background: mat.get-color-from-palette($primary);
+		color: mat.get-color-from-palette($primary, default-contrast);
+	}
+
+	.help-support {
+		color: mat.get-color-from-palette($foreground, secondary-text);
+
+		a {
+			color: mat.get-color-from-palette($foreground, text);
+		}
+	}
+
+	a.mat-accent, p.mat-accent, span.mat-accent {
+		color: mat.get-color-from-palette($accent, text);
+	}
+
+	// input:-webkit-autofill {
+	// 	color: mat.get-color-from-palette($primary, default-contrast) !important;
+	// }
+
+	@include navbar-theme.theme($theme);
+	@include basic-pagination-theme.theme($theme);
+	@include toast-ui-theme.theme($theme);
+	@include color-picker.theme($theme);
+	@include dialogs-theme.theme($theme);
+	@include home-theme.theme($theme);
+	@include category-theme.theme($theme);
+	@include thread-theme.theme($theme);
+	@include settings-theme.theme($theme);
+	@include profile-theme.theme($theme);
+}

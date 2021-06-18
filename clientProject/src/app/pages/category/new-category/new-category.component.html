@@ -1,0 +1,45 @@
+<main>
+	<app-page-header [defaultURL]="['/']">
+		Nueva categoria
+	</app-page-header>
+
+	<form class="new-hilo-form" fxLayout="column" [formGroup]="categoriaForm" (ngSubmit)="publicar()">
+		<mat-form-field appearance="outline">
+			<button type="button" mat-icon-button matPrefix
+				[iconPicker]="categoriaForm.controls.icono.value"
+				(iconPickerSelect)="categoriaForm.controls.icono.setValue($event)"
+				[ipIconPack]="['mat']">
+				<mat-icon>{{categoriaForm.controls.icono.value}}</mat-icon>
+			</button>
+			<mat-label>Nombre</mat-label>
+			<input matInput formControlName="nombre" required />
+			<mat-error *ngIf="categoriaForm.hasError('required', 'nombre')">Este campo es obligatorio.</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="outline">
+			<mat-label>Descripcion</mat-label>
+			<textarea matInput formControlName="descripcion" required></textarea>
+			<mat-error *ngIf="categoriaForm.hasError('required', 'descripcion')">Este campo es obligatorio.</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="outline">
+			<mat-label>Color</mat-label>
+			<input matInput formControlName="color" required
+				[style.color]="categoriaForm.controls.color.value"
+				[colorPicker]="categoriaForm.controls.color.value"
+				[value]="categoriaForm.controls.color.value"
+				(colorPickerChange)="categoriaForm.controls.color.setValue($event)"/>
+			<mat-error *ngIf="categoriaForm.hasError('required', 'color')">Este campo es obligatorio.</mat-error>
+			<mat-error *ngIf="categoriaForm.hasError('color', 'color')">El color introducido es invalido.</mat-error>
+			<button type="button" mat-icon-button matSuffix>
+				<mat-icon [style.color]="categoriaForm.controls.color.value">palette</mat-icon>
+			</button>
+		</mat-form-field>
+
+		<button type="submit" class="publicar-button" fxFlexAlign="end"
+			mat-raised-button color="primary"
+			[disabled]="!categoriaForm.valid"
+			type="submit">
+			<mat-icon>send</mat-icon>
+			{{categoriaID ? 'Actualizar' : 'Crear'}}
+		</button>
+	</form>
+</main>

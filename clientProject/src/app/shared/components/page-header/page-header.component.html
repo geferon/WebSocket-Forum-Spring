@@ -1,0 +1,8 @@
+<header class="primary-header">
+	<h1>
+		<button mat-icon-button *ngIf="canGoBack || defaultURL" (click)="goBack()">
+			<mat-icon>arrow_back</mat-icon>
+		</button>
+		<span #content><ng-content></ng-content></span>
+	</h1>
+</header>

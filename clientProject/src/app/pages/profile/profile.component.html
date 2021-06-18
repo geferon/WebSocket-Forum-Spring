@@ -1,0 +1,49 @@
+<main class="profile-page">
+	<ng-container *ngIf="usuario$ | async as usuario">
+		<app-page-header [defaultURL]="['/']">
+			{{usuario.username}}
+		</app-page-header>
+
+		<div fxLayout="column" fxLayout.gt-sm="row" fxLayoutGap="12px">
+			<div class="user-container" fxLayout="column" fxFlexAlign.gt-sm="start">
+				<div class="user-preview" fxFlex.gt-sm fxFlexAlign="start" fxFlexAlign.gt-sm="stretch">
+					<app-basic-user-label [user]="usuario"></app-basic-user-label>
+					<img class="user-avatar" [src]="'/files/' + usuario.avatar" alt="Foto de perfil de usuario" />
+					<p fxHide fxShow.gt-sm>
+						Miembro desde
+						<br />
+						<span timeago [date]="usuario.fechaRegistro"
+							[matTooltip]="usuario.fechaRegistro | date : 'medium'"></span>
+					</p>
+				</div>
+			</div>
+			<div class="user-content" fxFlex>
+				<div class="publicaciones" fxLayout="column" fxLayoutGap="8px">
+					<div class="publicacion-hilo content-container"
+						*ngFor="let publicacion of publicaciones$ | async"
+						[id]="'post-' + publicacion.id"
+						fxLayout="column">
+						<a class="post-header" fxLayout="row" [routerLink]="['/hilos', publicacion.hilo.id, publicacion.pagina]" [fragment]="'post-' + publicacion.id">
+							<span><strong>{{publicacion.hilo.titulo}}</strong> en <strong>{{getCategoria(publicacion).nombre}}</strong></span>
+							<span class="secondary">&nbsp;#{{publicacion.idPublicacion}}</span>
+
+							<div class="separator" fxFlex></div>
+
+							<span timeago [date]="publicacion.publicadoEn"
+								[matTooltip]="publicacion.publicadoEn | date : 'medium'"></span>
+						</a>
+						<div class="post-content" fxFlex fxLayout="column">
+							<toast-ui-viewer fxFlex [markdown]="publicacion.contenido"></toast-ui-viewer>
+						</div>
+					</div>
+
+					<app-basic-pagination *ngIf="publicacionesDataSource.page$ | async as page"
+						[totalPages]="page.totalPages" [page]="page.number"
+						(pageChange)="publicacionesDataSource.fetch($event)"
+						fxLayoutAlign="end">
+					</app-basic-pagination>
+				</div>
+			</div>
+		</div>
+	</ng-container>
+</main>

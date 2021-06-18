@@ -1,0 +1,125 @@
+<main class="hilo-page">
+	<ng-container *ngIf="hilo$ | async as hilo">
+		<div class="header" fxLayout="row" fxLayoutAlign="stretch end">
+			<app-page-header [defaultURL]="['/categorias', hilo.categoria]" fxFlex>
+				{{hilo.titulo}}
+			</app-page-header>
+			<app-basic-pagination *ngIf="publicacionesDataSource.page$ | async as page"
+				[totalPages]="page.totalPages" [page]="page.number + 1"
+				(pageChange)="changePage($event)"
+				fxLayoutAlign="end">
+			</app-basic-pagination>
+			<ng-container *ngIf="canEditThread(hilo)">
+				<button mat-icon-button [matMenuTriggerFor]="hiloOpciones">
+					<mat-icon>more_vert</mat-icon>
+				</button>
+				<mat-menu #hiloOpciones="matMenu" (click)="$event.stopPropagation();$event.preventDefault();">
+					<a mat-menu-item [routerLink]="['/hilos', hilo.id, 'editar']">
+						<mat-icon>edit</mat-icon>
+						<span>Editar</span>
+					</a>
+					<!-- Solo se puede borrar si esta vacio -->
+					<button mat-menu-item (click)="deleteHilo(hilo)">
+						<mat-icon>delete</mat-icon>
+						<span>Borrar</span>
+					</button>
+				</mat-menu>
+			</ng-container>
+			<button class="subscribe-button" mat-raised-button *ngIf="auth.isLoggedIn()"
+				(click)="(data.isSubscribed(hilo) ? data.unsubscribeFromHilo(hilo) : data.subscribeToHilo(hilo)).subscribe()"
+				[color]="data.isSubscribed(hilo) ? 'warn' : 'primary'"
+				[matTooltip]="data.isSubscribed(hilo) ? 'Desubscribir' : 'Subscribir'">
+				<mat-icon>
+					{{data.isSubscribed(hilo) ? 'unsubscribe' : 'mark_email_read'}}
+				</mat-icon>
+			</button>
+		</div>
+
+		<div class="publicaciones" fxLayout="column" fxLayoutGap="8px">
+			<div class="publicacion-hilo" *ngFor="let publicacion of publicaciones$ | async"
+				[id]="'post-' + publicacion.id"
+				gdRows.lt-md="auto 1fr"
+				gdColumns.gt-sm="230px 1fr">
+				<div class="user-container" fxLayout="column">
+					<div class="user-preview" fxFlex.gt-sm fxFlexAlign="start" fxFlexAlign.gt-sm="stretch">
+						<app-basic-user-label [user]="publicacion.creador"></app-basic-user-label>
+						<a [routerLink]="['/', 'usuarios', publicacion.creador.id]">
+							<img class="user-avatar" [src]="'/files/' + publicacion.creador.avatar" alt="Foto de perfil de usuario" />
+						</a>
+						<p fxHide fxShow.gt-sm>
+							Miembro desde
+							<br/>
+							<span timeago [date]="publicacion.creador.fechaRegistro"
+							[matTooltip]="publicacion.creador.fechaRegistro | date : 'medium'"></span>
+						</p>
+					</div>
+				</div>
+				<div class="content-container" fxLayout="column">
+					<div class="post-header" fxLayout="row">
+						<a fxFlex [routerLink]="'.'" [fragment]="'post-' + publicacion.id">
+							<span timeago [date]="publicacion.publicadoEn"
+								[matTooltip]="publicacion.publicadoEn | date : 'medium'"></span>
+							<span class="secondary">&nbsp;#{{publicacion.idPublicacion}}</span>
+						</a>
+						<div class="buttons" *ngIf="publicacion.idPublicacion != 1">
+							<button mat-icon-button *ngIf="canEdit(publicacion) && threadEdited != publicacion" (click)="setEditing(publicacion)">
+								<mat-icon>edit</mat-icon>
+							</button>
+							<button mat-icon-button *ngIf="canDelete(publicacion)" (click)="deletePublicacion(publicacion)">
+								<mat-icon>delete</mat-icon>
+							</button>
+						</div>
+					</div>
+					<div class="post-content" [class.post-editing]="threadEdited?.id == publicacion.id" fxFlex fxLayout="column">
+						<div class="editor-container">
+							<toast-ui-viewer fxFlex
+								[markdown]="publicacion.contenido"
+								[style.visibility]="threadEdited?.id == publicacion.id ? 'hidden' : 'visible'"></toast-ui-viewer>
+							<toast-ui-editor [(ngModel)]="threadEdited.contenido" [height]="'unset'"
+								*ngIf="threadEdited?.id == publicacion.id"></toast-ui-editor>
+						</div>
+						<div class="edit-buttons" fxLayout="row" fxLayoutAlign="end" fxLayoutGap="12px"
+							*ngIf="threadEdited?.id == publicacion.id">
+							<button mat-raised-button color="warn" (click)="threadEdited = null">Cancelar</button>
+							<button mat-raised-button color="primary" (click)="edit(threadEdited)">Guardar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<form class="new-publicacion-form"
+				*ngIf="auth.isLoggedIn()"
+				[formGroup]="nuevaPublicacion"
+				(submit)="onSubmit()">
+				<toast-ui-editor formControlName="contenido"
+					[minHeight]="'200px'">
+				</toast-ui-editor>
+				<div fxLayout="row" fxLayoutAlign="end center">
+					<span class="length" [ngClass]="{'mat-error': !nuevaPublicacion.valid}">{{nuevaPublicacion.controls.contenido.value?.length ?? 0}} / {{contentMaxLength}}</span>
+					<button mat-raised-button color="primary" type="submit" [disabled]="!nuevaPublicacion.valid">Publicar</button>
+				</div>
+			</form>
+			<!-- <div class="new-publicacion-form not-logged" *ngIf="!auth.isLoggedIn()">
+				<h3>Necesitas iniciar sesión para poder publicar en este hilo.</h3>
+			</div> -->
+
+			<div class="footer-buttons" fxLayout="row" fxLayoutAlign="end">
+				<app-basic-pagination *ngIf="publicacionesDataSource.page$ | async as page"
+					[totalPages]="page.totalPages" [page]="page.number + 1"
+					(pageChange)="changePage($event)"
+					fxLayoutAlign="end">
+				</app-basic-pagination>
+
+				<button class="subscribe-button" mat-raised-button *ngIf="auth.isLoggedIn()"
+					(click)="(data.isSubscribed(hilo) ? data.unsubscribeFromHilo(hilo) : data.subscribeToHilo(hilo)).subscribe()"
+					[color]="data.isSubscribed(hilo) ? 'warn' : 'primary'"
+					[matTooltip]="data.isSubscribed(hilo) ? 'Desubscribir' : 'Subscribir'">
+					<mat-icon>
+						{{data.isSubscribed(hilo) ? 'unsubscribe' : 'mark_email_read'}}
+					</mat-icon>
+				</button>
+			</div>
+		</div>
+	</ng-container>
+</main>

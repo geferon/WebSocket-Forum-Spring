@@ -1,0 +1,45 @@
+:host {
+	// margin-left: 8px;
+
+	display: inline-block;
+}
+
+.pages-container {
+	overflow: hidden;
+
+	.page-button,
+	.pagination-spacer {
+		text-decoration: none;
+		border-radius: 0;
+		line-height: unset;
+		min-width: unset;
+
+		:first-child {
+			border-radius: 4px 0 0 4px;
+		}
+		:last-child {
+			border-radius: 0 4px 4px 0;
+		}
+	}
+}
+
+:host.pagination-small {
+	.pages-container {
+		border-radius: 4px;
+
+		.page-button,
+		.pagination-spacer {
+			padding: 2px 8px;
+		}
+	}
+}
+
+:host:not(.pagination-small) {
+	.pages-container {
+		.page-button,
+		.pagination-spacer {
+			padding: 6px 12px;
+			border-radius: 4px;
+		}
+	}
+}

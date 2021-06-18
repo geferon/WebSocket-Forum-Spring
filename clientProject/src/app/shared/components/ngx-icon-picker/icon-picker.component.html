@@ -1,0 +1,34 @@
+<mat-menu class="icon-picker" #dialogPopup fxLayout="column">
+	<div class="header" fxLayout="column">
+		<mat-form-field appearance="legacy">
+			<mat-label>Icono</mat-label>
+			<input matInput [text] [value]="search" (newValue)="setSearch($event)" [placeholder]="ipPlaceHolder" (click)="$event.stopPropagation()">
+		</mat-form-field>
+	</div>
+
+	<div class="icon-grid">
+		<div *ngFor="let icon of icons | searchIcon:search">
+			<button mat-icon-button *ngIf="icon" class="ip-button-icon" type="button" title="{{ icon.name }}"
+					[ngClass]="{'mat-accent': icon === selectedIcon}"
+					[style.width.px]="buttonWidth"
+					[style.height.px]="buttonHeight"
+					[style.font-size.px]="ipIconSize"
+					[style.line-height.px]="ipIconSize"
+					[style.padding-top.px]="ipIconVerticalPadding"
+					[style.padding-bottom.px]="ipIconVerticalPadding"
+					[style.padding-left.px]="ipIconHorizontalPadding"
+					[style.padding-right.px]="ipIconHorizontalPadding"
+					(click)="selectIcon(icon)">
+				<span *ngIf="icon.type === iconType.FontAwesome" class="fa fa-{{icon.id}}"
+					[style.font-size.px]="ipIconSize"></span>
+				<span *ngIf="icon.type === iconType.Bootstrap" class="glyphicon glyphicon-{{icon.id}}"
+					[style.font-size.px]="ipIconSize"></span>
+				<span *ngIf="icon.type === iconType.FontAwesome5" class="{{icon.id}}"
+					[style.font-size.px]="ipIconSize"></span>
+				<span *ngIf="icon.type === iconType.Material" class="material-icons"
+					[style.font-size.px]="ipIconSize">{{icon.id}}</span>
+			</button>
+		</div>
+	</div>
+
+</mat-menu>

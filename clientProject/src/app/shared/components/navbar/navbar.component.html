@@ -1,0 +1,58 @@
+<nav class="navbar-header" fxLayout="row wrap" fxLayoutAlign="center center">
+	<a mat-button color="accent" class="header-button" routerLink="/">
+		<mat-icon>home</mat-icon>
+		Inicio
+	</a>
+	<a mat-button color="accent" class="header-button" routerLink="/categories" fxHide.lt-sm>
+		<mat-icon>forum</mat-icon>
+		Categorias
+	</a>
+
+	<!-- Filler -->
+	<div fxFlex></div>
+
+	<ng-container *ngIf="subscripcionesNuevas$ | async as subscripciones">
+		<button mat-icon-button color="accent" *ngIf="subscripciones.length > 0" [matMenuTriggerFor]="subscripcionesMenu">
+			<mat-icon [matBadge]="subscripciones.length" matBadgeColor="warn">feed</mat-icon>
+		</button>
+		<mat-menu #subscripcionesMenu="matMenu" xPosition="before">
+			<h2 class="mat-menu-header">Subscripciones</h2>
+			<a mat-menu-item fxLayout="row"
+				class="subscripcion"
+				*ngFor="let subscripcion of subscripciones"
+				[routerLink]="['/', 'hilos', subscripcion.hilo.id, subscripcion.ultimaPublicacionLeida.pagina]"
+				[fragment]="'post-' + subscripcion.ultimaPublicacionLeida.id">
+				<div fxFlex>{{subscripcion.hilo.titulo}}</div>
+				<div class="badge mat-badge-large mat-badge-accent">
+					<span class="mat-badge-content">{{subscripcion.publicacionesPendientes}}</span>
+				</div>
+			</a>
+		</mat-menu>
+	</ng-container>
+
+	<button mat-button color="accent" (click)="loginOrRegister()" *ngIf="!auth.isLoggedIn()">
+		<mat-icon>login</mat-icon>
+		Iniciar sesion
+	</button>
+	<ng-container *ngIf="auth.isLoggedIn()">
+		<button mat-button color="accent" [ngClass]="getRoles()" [matMenuTriggerFor]="loggedMenu">
+			<!-- <mat-icon>person</mat-icon> -->
+			<img class="avatar" [src]="'/files/' + auth.user.avatar" alt="Foto de perfil" />
+			{{auth.username}}
+		</button>
+		<mat-menu #loggedMenu="matMenu">
+			<a mat-menu-item [routerLink]="['/', 'usuarios', user.id]">
+				<mat-icon>person</mat-icon>
+				<span>Perfil</span>
+			</a>
+			<a mat-menu-item [routerLink]="['/', 'ajustes']">
+				<mat-icon>settings</mat-icon>
+				<span>Ajustes</span>
+			</a>
+			<button mat-menu-item (click)="logout()">
+				<mat-icon>logout</mat-icon>
+				<span>Cerrar sesión</span>
+			</button>
+		</mat-menu>
+	</ng-container>
+</nav>

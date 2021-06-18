@@ -1,0 +1,127 @@
+@use '~@angular/flex-layout/mq' as mq;
+
+.header {
+	app-basic-pagination {
+		margin-bottom: 12px;
+	}
+	button {
+		margin-bottom: 12px;
+	}
+}
+.subscribe-button {
+	margin-left: 12px;
+}
+
+.publicacion-hilo {
+	border-radius: 4px;
+	min-height: 320px;
+
+	.user-container {
+		text-align: center;
+
+		a {
+			display: block;
+		}
+
+		.user-preview {
+			// margin: 40px;
+			margin: 8px 12px 4px;
+
+			.user-avatar {
+				width: 70px;
+				max-width: 100%;
+			}
+
+			p, app-basic-user-label {
+				display: block;
+				margin-bottom: 2px;
+			}
+		}
+	}
+
+	.content-container {
+		.post-header {
+			> * {
+				text-decoration: none;
+				padding: 6px;
+			}
+			* {
+				color: inherit;
+				line-height: inherit;
+
+				font: {
+					size: inherit;
+					weight: inherit;
+				}
+			}
+
+			.buttons {
+				button, mat-icon {
+					width: unset;
+					height: unset;
+					margin-left: 6px;
+				}
+			}
+		}
+		.post-content {
+			padding: 14px;
+
+			line-break: anywhere;
+		}
+		.editor-container {
+			position: relative;
+
+			toast-ui-editor {
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+		}
+
+		.post-editing .editor-container {
+			min-height: 240px;
+		}
+
+		.edit-buttons {
+			margin-top: 16px;
+		}
+	}
+}
+
+.new-publicacion-form {
+	// margin-top: 24px;
+	margin: 8px 0;
+
+	toast-ui-editor {
+		margin: 8px 0;
+	}
+
+	.length {
+		transition: color 0.4s linear;
+		margin-right: 12px;
+	}
+
+	&.not-logged {
+		text-align: center;
+	}
+}
+
+.footer-buttons {
+	margin: 12px 0;
+}
+
+@include mq.layout-bp(gt-sm) {
+	.publicacion-hilo .user-container .user-preview {
+		margin: 40px;
+
+		.user-avatar {
+			width: 100px;
+		}
+
+		p, app-basic-user-label {
+			margin-bottom: 6px;
+		}
+	}
+}

@@ -1,0 +1,40 @@
+@use 'sass:map';
+@use '~@angular/material' as mat;
+
+@mixin theme($theme) {
+	$primary: map.get($theme, primary);
+	$accent: map.get($theme, accent);
+	$warn: map.get($theme, warn);
+	$background: map.get($theme, background);
+	$foreground: map.get($theme, foreground);
+	// $typo-config: mat.get-typography-config($theme, mat.define-typography-config());
+	$typo-config: mat.define-typography-config();
+
+	.categoria-hilo {
+		background: mat.get-color-from-palette($background, dialog);
+		color: mat.get-color-from-palette($primary, default-contrast);
+		font-size: mat.font-size($typo-config, subheading-2);
+
+		.title {
+			font-weight: mat.font-weight($typo-config, title);
+
+			a {
+				color: mat.get-color-from-palette($primary, default-contrast);
+			}
+		}
+		.subtitle {
+			font-size: mat.font-size($typo-config, body-1);
+		}
+
+		> .info {
+			background: mat.get-color-from-palette($background, card);
+			color: mat.get-color-from-palette($foreground, secondary-text);
+
+			mat-icon {
+				font-size: mat.font-size($typo-config, subheading-2);
+				width: mat.font-size($typo-config, subheading-2);
+				height: mat.font-size($typo-config, subheading-2);
+			}
+		}
+	}
+}

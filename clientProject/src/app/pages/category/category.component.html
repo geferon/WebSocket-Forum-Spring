@@ -1,0 +1,89 @@
+<main>
+	<ng-container *ngIf="categoria$ | async as categoria">
+		<div class="header" fxLayout="row" fxLayoutAlign="stretch end" fxLayoutGap="12px">
+			<app-page-header [defaultURL]="'/'" fxFlex>
+				{{categoria.nombre}}
+			</app-page-header>
+			<a class="create-hilo" mat-raised-button color="primary"
+				*ngIf="auth.isLoggedIn()"
+				[routerLink]="['new-thread']">
+				Crear hilo
+			</a>
+			<app-basic-pagination *ngIf="hilosDataSource.page$ | async as page"
+				class="thread-pagination"
+				fxLayoutAlign="end"
+				[totalPages]="page.totalPages" [page]="page.number"
+				(pageChange)="hilosDataSource.fetch($event)">
+			</app-basic-pagination>
+		</div>
+
+		<div class="categoria-hilos"
+			fxLayout="column" fxLayoutGap="8px">
+			<!-- gdColumns="66px 1fr 350px" -->
+			<div class="categoria-hilo mat-elevation-z4"
+				gdColumns="1fr"
+				gdColumns.gt-xs="1fr 350px"
+				gdColumns.gt-sm="1fr 400px"
+				*ngFor="let hilo of (hilos$ | async)">
+				<!-- <div class="icon">
+					<a [routerLink]="['/', 'hilos', hilo.id]"><mat-icon>{{hilo.icono}}</mat-icon></a>
+				</div> -->
+				<div class="content" fxLayout="column" fxLayoutAlign="space-around">
+					<div class="title">
+						<a [routerLink]="['/', 'hilos', hilo.id]">{{hilo.titulo}}</a>
+					</div>
+					<div class="subtitle">
+						<app-basic-user-label [user]="hilo.creador"></app-basic-user-label>
+						<app-basic-pagination
+							[totalPages]="hilo.paginasTotales" [routeBase]="['/', 'hilos', hilo.id]"
+							[small]="true">
+						</app-basic-pagination>
+					</div>
+				</div>
+				<a class="info" fxLayout="row" fxLayoutAlign="space-between" fxHide fxShow.gt-xs
+					[routerLink]="['/', 'hilos', hilo.id, hilo.ultimaPublicacion.pagina]"
+					[fragment]="hilo.ultimaPublicacion ? 'post-' + hilo.ultimaPublicacion.id : null">
+					<!-- Thread stats / 1st column -->
+					<div class="stats"
+						fxLayout="column" fxLayoutAlign="space-between">
+						<span>
+							<mat-icon>chat</mat-icon>
+							{{hilo.publicacionesTotales}} {{hilo.publicacionesTotales > 1 ? 'publicaciones' : 'publicacion'}}
+						</span>
+						<span [matTooltip]="hilo.fechaCreacion | date : 'medium'">
+							<mat-icon>schedule</mat-icon>
+							{{hilo.fechaCreacion | timeago}}
+						</span>
+					</div>
+					<!-- Last post / 2nd column -->
+					<ng-container *ngIf="hilo.ultimaPublicacion; let ultimaPublicacion">
+						<div class="last-post"
+							fxLayout="column" fxLayoutAlign="space-between">
+							<app-basic-user-label [user]="ultimaPublicacion.creador"></app-basic-user-label>
+							<span [matTooltip]="ultimaPublicacion.publicadoEn | date : 'medium'">
+								<mat-icon>update</mat-icon>
+								{{ultimaPublicacion.publicadoEn | timeago}}
+							</span>
+						</div>
+						<a [routerLink]="['/', 'usuarios', ultimaPublicacion.creador.id]" fxLayout="column" fxLayoutAlign="center">
+							<img class="user-avatar" [src]="'/files/' + ultimaPublicacion.creador.avatar" alt="Foto de perfil de creador" />
+						</a>
+					</ng-container>
+				</a>
+			</div>
+		</div>
+
+		<!-- <mat-paginator *ngIf="hilosDataSource.page$ | async as page"
+			class="transparent"
+			[length]="page.totalElements" [pageSize]="page.size"
+			[pageIndex]="page.number" [hidePageSize]="true"
+			(page)="hilosDataSource.fetch($event.pageIndex)">
+		</mat-paginator> -->
+		<app-basic-pagination *ngIf="hilosDataSource.page$ | async as page"
+			class="thread-pagination"
+			fxLayoutAlign="end"
+			[totalPages]="page.totalPages" [page]="page.number"
+			(pageChange)="hilosDataSource.fetch($event)">
+		</app-basic-pagination>
+	</ng-container>
+</main>

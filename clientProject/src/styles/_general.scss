@@ -1,0 +1,90 @@
+html,
+body {
+	height: 100vh;
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: "Roboto", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+	margin: 0;
+}
+
+h1,
+h2 {
+	font-weight: 400;
+}
+
+
+.primary-header {
+	padding-left: 20px;
+
+	h1 {
+		font-weight: 300;
+		margin: 0;
+		padding: 28px 8px;
+		font-size: 20px;
+	}
+}
+
+code,
+pre {
+	font-family: 'Roboto Mono', monospace;
+}
+
+code {
+	font-size: 90%;
+}
+
+pre {
+	font-size: 14px;
+}
+
+
+// Content
+app-root > router-outlet + * {
+	margin-top: 52px;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+	scroll-behavior: smooth;
+}
+
+main {
+	padding: 16px;
+	min-height: calc(100vh - 52px - 32px);
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	> * {
+		width: 75%;
+	}
+}
+
+@media (max-width: 1400px) {
+	main > * {
+		width: 90%;
+	}
+}
+@media (max-width: 720px) {
+	main > * {
+		width: 100%;
+	}
+}
+
+.content-row {
+	margin: 50px 0;
+}
+
+.mat-paginator.transparent {
+	background: transparent;
+}
+
+
+.user-ROLE_MODERATOR {
+	color: #2ECC71 !important;
+}
+
+.user-ROLE_ADMIN {
+	color: #ff0000 !important;
+}

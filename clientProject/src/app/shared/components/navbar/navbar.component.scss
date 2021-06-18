@@ -1,0 +1,31 @@
+.navbar-header {
+	padding: 8px 16px;
+
+	// & > .mat-button {
+	// 	&:last-child {
+	// 		margin-left: auto;
+	// 	}
+	// }
+
+	.avatar {
+		height: 24px;
+		width: 24px;
+		margin-right: 4px;
+	}
+}
+
+.subscripcion .badge {
+	line-height: inherit;
+}
+.subscripcion .badge .mat-badge-content {
+	display: block;
+	position: unset;
+	height: 42px;
+	width: 42px;
+	line-height: 42px;
+}
+
+.mat-menu-header {
+	padding: 0 16px;
+}
+
